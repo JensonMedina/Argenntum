@@ -1,0 +1,110 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Roboto", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+  }
+body{
+    width: 100%;
+}
+main{
+    width: 100%;
+}
+#servicios{
+    width: 100%;
+}
+  
+  :root {
+    --color-primary: #312453;
+    --color-secondary: #7b59d0;
+    --color-tertiary: #bfbcf3;
+    --color-white: #fff;
+    --color-grey0: #eee;
+    --color-grey1: #666;
+  }
+  .header-servicios{
+    top: 0;
+    position: relative;
+  }
+  .title{
+    text-align: center;
+    margin-top: 1em;
+  }
+  .title h2{
+    font-weight: 500;
+  }
+  .gridConteiner-servicios{
+    margin-bottom: 2em;
+    padding: 2em;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(3, auto);
+    grid-auto-rows: min-content;
+    column-gap: 1.5em;
+    row-gap: 1.5em;
+  }
+  
+  .card{
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    height: 100%;
+    width: 100%;
+    padding: 1em;
+    overflow: hidden;
+    border-radius: 10px;
+    background-color: var(--color-grey0);
+    box-shadow: rgba(0, 0, 0, 0.15) 0px 2px 4px 0px;
+  }
+  .btn-container{
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+  }
+  .btn-card{
+    margin: 0;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 30px;
+    /* background-color: var(--color-secondary); */
+    border: 1px solid var(--color-primary);
+    /* color: #fff; */
+    font-size: 18px;
+    font-weight: 400;
+    cursor: pointer;
+  }
+  .btn-card a{
+    text-decoration: none;
+    color: #000;
+  }
+  .btn-card:hover{
+    background-color: var(--color-secondary);
+    color: var(--color-white);
+  }
+  .icono-card{
+    display: flex;
+    justify-content: center;
+  }
+  .icono-card i{
+    font-size: 2em;
+  }
+  .text-card{
+    height: 100%;
+    padding: 1em;
+  }
+  .text-card h2{
+    font-weight: 500;
+    margin-bottom: 3px;
+  }
+  .text-card h2, p{
+    text-align: center;
+  }
+  
+  @media only screen and (min-width: 768px){
+    .gridConteiner-servicios{
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: repeat(2, auto);
+    }
+  }
