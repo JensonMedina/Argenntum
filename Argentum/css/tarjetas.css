@@ -25,12 +25,6 @@ main{
     display: flex;
     min-height: 400px;
 }
-/* .main-tarjetas{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-} */
 
 .img-background{
     background-image: url("/images/tarjetasBackground.jpg");
@@ -80,6 +74,7 @@ main{
     padding: 0px 16px;
 }
 .tarjeta-container-grid{
+    margin-top: 30px;
     display: grid;
     gap: 16px;
     grid-template-columns: repeat(4, 1fr);
@@ -98,6 +93,7 @@ main{
     font-weight: normal;
     font-style: normal;
     display: flex;
+    align-items: start;
     position: relative;
     flex-grow: 1;
     flex-direction: column;
@@ -136,4 +132,27 @@ main{
 .tarjeta-footer>p i{
     width: 1.7rem;
     height: 1.7rem;
+}
+.btn-container{
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 50px;
+    display: flex;
+    justify-content: center;
+}
+.btn-conocer{
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 0.9rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    border-radius: 1.25rem;
+    min-height: 2.5rem;
+    min-width: 8.5rem;
+    color: #fff;
+    background-color: var(--color-secondary);
+    border: 0.06rem solid var(--color-secondary);
+    text-decoration: none;
 }
