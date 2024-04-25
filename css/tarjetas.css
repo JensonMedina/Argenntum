@@ -27,7 +27,7 @@ main{
 }
 
 .img-background{
-    background-image: url("/images/tarjetasBackground.jpg");
+    background-image: url("../images/tarjetasBackground.jpg");
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;

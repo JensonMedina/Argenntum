@@ -58,7 +58,7 @@ section{
     font-weight: bold;
   }
   .img-background{
-    background-image: url("/images/graphic-design-4-inversiones.jpg");
+    background-image: url("../images/graphic-design-4-inversiones.jpg");
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;
