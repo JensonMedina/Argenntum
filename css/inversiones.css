@@ -256,6 +256,9 @@ p {
   .slider {
     max-width: 700px;
   }
+  .slider-inner{
+    width: 80%;
+  }
   .slider-inner-item {
     flex-direction: column;
     height: fit-content;
