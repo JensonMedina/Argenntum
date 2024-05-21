@@ -16,45 +16,51 @@ form.addEventListener("submit", (e) => {
     if(condicion){
         enviarFormulario();
     }
-
 });
 
 function validacionForm(){
     let condicion = true;
 
-    listaImputs.forEach ((element) => {
-        element.lastElementChild.innerHTML = "";
-    })
-
-    //Validacion de que los campos no esten vacios y su tamaño no sea menor a 1
     if (cuil.value.length != 8 || cuil.value.trim() == "" || cuil.value.length > 8){
         mostrarMensaje("contenedor-cuil", "DNI no valido.");
         condicion = false;
+    }else{
+        limpiarMensaje("contenedor-cuil");
     }
 
     if (cuilSufijo.value.length != 1 || cuilSufijo.value.trim() == ""){
         mostrarMensaje("contenedor-cuil", "El Sufijo del CUIL debe ser un solo número.");
         condicion = false;
+    }else{
+        limpiarMensaje("contenedor-cuil");
     }
 
     if (cuil.value.trim() == "" && cuilSufijo.value.trim() == ""){
         mostrarMensaje("contenedor-cuil", "Por favor, complete estos datos.");
         condicion = false;
+    }else{
+        limpiarMensaje("contenedor-cuil");
     }
     
     if (apellido.value.length < 1 || apellido.value.trim() == ""){
         mostrarMensaje("contenedor-apellido", "Apellido no valido.");
         condicion = false;
+    }else{
+        limpiarMensaje("contenedor-apellido");
     }
 
     if (nombre.value.length < 1 || nombre.value.trim() == ""){
         mostrarMensaje("contenedor-nombre", "Nombre no valido.");
         condicion = false;
+    }else{
+        limpiarMensaje("contenedor-nombre");
     }
 
     if (correo.value.length < 1 || correo.value.trim() == ""){
         mostrarMensaje("contenedor-correo", "Correo no valido.");
         condicion = false;
+    }else{
+        limpiarMensaje("contenedor-correo");
     }
 
     if (validarEmail(correo)){
@@ -65,11 +71,8 @@ function validacionForm(){
     if (telefono.value.length > 11 || telefono.value.trim() == ""){
         mostrarMensaje("contenedor-telefono", "Telefono no valido.");
         condicion = false;
-    }
-
-    if (consultaTexto.value.trim() == ""){
-        mostrarMensaje("contenedor-consultaTexto", "Escriba una consulta.");
-        condicion = false;
+    }else{
+        limpiarMensaje("contenedor-telefono");
     }
 
     return condicion;
@@ -81,8 +84,8 @@ function validarEmail(email) {
 }
 
 function enviarFormulario(){
-    form.reset();
-    mostrarMensaje("footer-formulario", "Formulario enviado con éxito :)");
+    alert("Formulario enviado con éxito :)");
+    limpiarInputs();
 }
 
 function mostrarMensaje(claseInput, mensaje){
@@ -90,15 +93,42 @@ function mostrarMensaje(claseInput, mensaje){
     elemento.lastElementChild.innerHTML = mensaje;
 };
 
+function limpiarMensaje(claseInput){
+    let elemento = document.querySelector(`.${claseInput}`);
+    elemento.lastElementChild.innerHTML = "";
+}
+
+function limpiarInputs(){
+    cuilSufijo.value='';
+    cuil.value='';
+    apellido.value='';
+    nombre.value='';
+    correo.value='';
+    telefono.value='';
+    consultaTexto.value='';
+}
+
 //Labels que sólo aceptan numeros
 telefono.addEventListener('keypress', (event) => {
     soloNumeros();
+    const tamanio = telefono.value.length;
+    if(tamanio>=11){
+        event.preventDefault();
+    }
 });
 cuil.addEventListener('keypress', (event) => {
     soloNumeros();
+    const tamanio = cuil.value.length;
+    if(tamanio>=8){
+        event.preventDefault();
+    }
 });
 cuilSufijo.addEventListener('keypress', (event) => {
     soloNumeros();
+    const tamanio = cuilSufijo.value.length;
+    if(tamanio>=1){
+        event.preventDefault();
+    }
 });
 function soloNumeros(){
     const keyCode = event.keyCode;
