@@ -77,12 +77,12 @@ p{
 }
 .grid-container{
     display: grid;
-    justify-content: center;
-    gap: 30px;
     grid-template-columns: repeat(4, auto);
 }
 .card{
     max-width: 300px;
+    margin-right: 30px;
+    margin-bottom: 30px;
     display: flex;
     flex-direction: column;
     border-radius: 32px;
