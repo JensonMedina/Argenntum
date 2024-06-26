@@ -34,10 +34,10 @@ async function getCuentas() {
     let cardCuentasHtml = "";
 
     // Obtener el idTipoCuenta del cliente desde sessionStorage
-    let idTipoCuenta = clienteInfo[9];
+    let idCliente = clienteInfo[0];
 
     // Realizar la solicitud GET al servidor para obtener los datos de cuenta
-    const response = await fetch(URL + "tipoCuenta/" + idTipoCuenta);
+    const response = await fetch(URL + "tipoCuenta/" + idCliente);
 
     if (!response.ok) {
       throw new Error("Error al obtener los datos de la cuenta.");
@@ -74,12 +74,12 @@ async function getCuentas() {
 async function getTarjetas() {
     try {
         console.log(clienteInfo[8])
-        let idTipoTarjeta = clienteInfo[8]
+        let idCliente = clienteInfo[0]
         let panelTarjeta = document.querySelector("#section-tarjetas");
         let cardTarjetaHtml = "";
 
         // Realizar la solicitud GET al servidor para obtener los datos de la tarjeta
-        const response = await fetch(URL + "tipoTarjeta/" + idTipoTarjeta);
+        const response = await fetch(URL + "tipoTarjeta/" + idCliente);
 
         if (!response.ok) {
             throw new Error("Error al obtener los datos de la tarjeta.");
