@@ -94,8 +94,8 @@ class Conexion:
         
         self.conn.commit()
         
-        self.cursor.execute('''INSERT INTO `tarjetas` (nroTarjeta, vencimiento, codigo, tipo, fechaInicio) VALUES ('4000123456789101','2026-08-01','123','VISA Debito','2020-07-01'),('4000987654321011','2026-08-01','987','VISA Credito','2020-07-01'),('377798765444332','2026-08-01','997','AMERICAN EXPRESS','2020-07-01');''')
-        self.conn.commit()
+        # self.cursor.execute('''INSERT INTO `tarjetas` (nroTarjeta, vencimiento, codigo, tipo, fechaInicio) VALUES ('4000123456789101','2026-08-01','123','VISA Debito','2020-07-01'),('4000987654321011','2026-08-01','987','VISA Credito','2020-07-01'),('377798765444332','2026-08-01','997','AMERICAN EXPRESS','2020-07-01');''')
+        # self.conn.commit()
         
 
         self.cursor.execute('''CREATE TABLE IF NOT EXISTS `tipocuentas` (
@@ -106,8 +106,8 @@ class Conexion:
         ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;''')
         self.conn.commit()
 
-        self.cursor.execute('''INSERT INTO `tipocuentas` (tipoCuenta, nroCuenta) VALUES ('Caja de Ahorro en Pesos','0650030602000080904070'),('Caja de Ahorro en USD','084-123456 / 3');''')
-        self.conn.commit()
+        # self.cursor.execute('''INSERT INTO `tipocuentas` (tipoCuenta, nroCuenta) VALUES ('Caja de Ahorro en Pesos','0650030602000080904070'),('Caja de Ahorro en USD','084-123456 / 3');''')
+        # self.conn.commit()
         
         self.cursor.close() #el cursor lo cerramos recien aca una vez que se ejecutaron las dos acciones.
         
@@ -169,7 +169,9 @@ class Conexion:
         return tipoCuenta
     
     def consultar_datos_tarjeta(self, idCliente):
-        self.cursor.execute(f"select nroTarjeta, vencimiento, codigo, tipo, fechaInicio from clientes, tarjetas where tarjetas.id = clientes.idTarjeta and clientes.id = {idCliente};")
+        sql = ("select nroTarjeta, vencimiento, codigo, tipo, fechaInicio from clientes, tarjetas where tarjetas.id = clientes.idTarjeta and clientes.id = %s;")
+        valores = (idCliente,)
+        self.cursor.execute(sql, valores)
         tarjeta = self.cursor.fetchone()
         return tarjeta
 
