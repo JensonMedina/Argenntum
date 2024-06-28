@@ -108,7 +108,23 @@ class Conexion:
 
         # self.cursor.execute('''INSERT INTO `tipocuentas` (tipoCuenta, nroCuenta) VALUES ('Caja de Ahorro en Pesos','0650030602000080904070'),('Caja de Ahorro en USD','084-123456 / 3');''')
         # self.conn.commit()
-        
+
+##################################################
+#CREACION TABLA DESTINATARIO
+##################################################
+        self.cursor.execute('''CREATE TABLE IF NOT EXISTS `destinatarios`(
+        `idDestinatario` int NOT NULL AUTO_INCREMENT,
+        `destinatario` varchar(45) NOT NULL,
+	    `cbu` varchar(45) NOT NULL,
+        `alias` varchar(45) NOT NULL,
+	    `idCliente` int,
+	    PRIMARY KEY (`idDestinatario`),
+        KEY `cliente_destinatarios_idx` (`idCliente`),
+        CONSTRAINT `cliente_destinatarios` FOREIGN KEY (`idCliente`) REFERENCES clientes (`id`)
+        ) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8;''')
+        self.conn.commit()
+
+
         self.cursor.close() #el cursor lo cerramos recien aca una vez que se ejecutaron las dos acciones.
         
         self.cursor = self.conn.cursor() #y ahora si volvemos a abrir el cursor, pero sin el dictionary en true.
@@ -174,6 +190,32 @@ class Conexion:
         self.cursor.execute(sql, valores)
         tarjeta = self.cursor.fetchone()
         return tarjeta
+    
+##################################################
+#CREACION METODO AGREGAR DESTINATARIO
+##################################################    
+    def agregar_destinatario(self, descripcion,   cbu, alias, idCliente):
+        sql = "INSERT INTO destinatarios (descripcion, cbu, alias, idCliente) VALUES (%s, %s, %s, %s)"
+        valores = (descripcion, cbu, alias, idCliente)
+
+        self.cursor.execute(sql,valores)
+        self.conn.commit()
+        nuevo_destinatario_id = self.cursor.lastrowid
+        return nuevo_destinatario_id
+
+##################################################
+#CREACION METODO MOSTRAR DESTINATARIO
+##################################################
+
+    def consultar_destinatarios(self, idCliente):
+        sql = "SELECT d.descripcion, d.cbu, d.alias FROM destinatarios d RIGHT JOIN clientes c ON d.idCliente = c.id WHERE idCliente = %s;"
+        valores = (idCliente,)
+
+        self.cursor.execute(sql, valores)
+        destinatarios = self.cursor.fetchall()
+        return destinatarios
+    
+##################################################
 
 # Programa principal
 conexion = Conexion(host='localhost', user='root', password='1234', database='argentum')
@@ -190,9 +232,6 @@ def loguin():
         return jsonify({"cuenta": cuenta, "cliente_info": cliente_info})
     else:
         return jsonify({"mensaje": "Datos incorrectos."}), 500
-
-
-
 
 def calcular_digito_verificador(base, factores):
     suma = sum(int(d) * f for d, f in zip(base, factores))
@@ -280,7 +319,39 @@ def mostrar_datos_tarjeta(idCliente):
         return jsonify(tarjeta)
     else:
         return "Tarjeta no encontrada", 404
+##################################################
+#RUTEO AGREGAR DESTINATARIO
+##################################################
 
+@app.route("/destinatarios/<int:idCliente>", methods=["POST"])
+def agregar_destinatario(idCliente):
+    descripcion = request.form['descripcion']
+    cbu = request.form['cbu']
+    alias = request.form['alias']
+    #idCliente = request.args.get('idCliente')
+
+    # Agregar el destinatario a la base de datos
+    nuevo_destinatario_id = conexion.agregar_destinatario(descripcion,cbu,alias,idCliente)
+
+    # Pregunto si fue exitosa la operacion
+    if nuevo_destinatario_id:
+        return jsonify({"mensaje": "Destinatario agregado a la Agenda."}), 201
+    else:
+        return jsonify({"mensaje": "Error al agregar el destinatario."}), 500
+
+
+
+##################################################
+# RUTEO MOSTRAR DESTINATARIO
+##################################################
+
+@app.route("/destinatarios/<int:idCliente>", methods=["GET"])
+def mostrar_agenda(idCliente):
+    agenda = conexion.consultar_destinatarios(idCliente)
+    if agenda:
+        return jsonify(agenda)
+    else:
+        return "Agenda vacía", 404
 
 
 if __name__ == "__main__":
