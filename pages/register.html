@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Argentum-Registro</title>
-    <link rel="icon" type="image/x-icon" href="../static/images/logo.png">
+    <link rel="icon" type="image/x-icon" href="../static/images/logo.png" />
     <link rel="stylesheet" href="../static/css/loguin.css" />
     <script
       src="https://kit.fontawesome.com/2f8ba933a8.js"
@@ -29,12 +29,7 @@
           <label for="nombre">
             <i class="fas fa-user"></i>
           </label>
-          <input
-            type="text"
-            name="nombre"
-            placeholder="Nombre"
-            id="nombre"
-          />
+          <input type="text" name="nombre" placeholder="Nombre" id="nombre" />
         </div>
         <div class="form-item">
           <label for="apellido">
@@ -51,18 +46,13 @@
           <label for="dni">
             <i class="fas fa-user"></i>
           </label>
-          <input type="text" name="dni" placeholder="Dni" id="dni"/>
+          <input type="text" name="dni" placeholder="Dni" id="dni" />
         </div>
         <div class="form-item">
           <label for="cuil">
             <i class="fas fa-user"></i>
           </label>
-          <input
-            type="text"
-            name="cuil"
-            placeholder="Cuil"
-            id="cuil"
-          />
+          <input type="text" name="cuil" placeholder="Cuil" id="cuil" />
         </div>
         <div class="form-item">
           <label for="username">
@@ -90,12 +80,7 @@
           <label for="email">
             <i class="fas fa-envelope"></i>
           </label>
-          <input
-            type="email"
-            name="email"
-            placeholder="Email"
-            id="email"
-          />
+          <input type="email" name="email" placeholder="Email" id="email" />
         </div>
         <div class="msg" id="msg"></div>
         <input type="submit" value="Registrarse" />
@@ -104,45 +89,64 @@
 
     <script>
       const URL = "http://127.0.0.1:5000/";
-
+    
       // Capturamos el evento de envío del formulario
       document
         .getElementById("formulario")
-        .addEventListener("submit", function (event) {
+        .addEventListener("submit", async function (event) {
           event.preventDefault(); // Evitamos que se envie el form
-
+    
           if (ValidarFormulario()) {
-            var formData = new FormData(this);
-
-            // Realizamos la solicitud POST al servidor
-            fetch(URL + "clientes", {
-              method: "POST",
-              body: formData, // Aquí enviamos formData. Dado que formData puede contener archivos, no se utiliza JSON.
-            })
-              //Después de realizar la solicitud POST, se utiliza el método then() para manejar la respuesta del servidor.
-              .then(function (response) {
-                if (response.ok) {
-                  //Si la respuesta es exitosa, convierte los datos de la respuesta a formato JSON.
-                  return response.json();
-                } else {
-                  // Si hubo un error, lanzar explícitamente una excepción
-                  // para ser "catcheada" más adelante
-                  throw new Error("Error al crear cuenta.");
-                }
-              })
-
-              //Respuesta OK, muestra una alerta informando que el producto se agregó correctamente y limpia los campos del formulario para que puedan ser utilizados para un nuevo producto.
-              .then(function (data) {
-                alert("Cuenta creada correctamente.");
-                window.location = "loguin.html";
-              })
-
-              // En caso de error, mostramos una alerta con un mensaje de error.
-              .catch(function (error) {
-                alert("Error al crear la cuenta.");
-              })
+            let dni = document.getElementById("dni");
+            try {
+              let dniValidado = await ValidarDni(dni.value);
+              if (dniValidado) {
+                // Realizamos la solicitud POST al servidor
+                var formData = new FormData(this);
+                fetch(URL + "clientes", {
+                  method: "POST",
+                  body: formData, // Aquí enviamos formData. Dado que formData puede contener archivos, no se utiliza JSON.
+                })
+                  .then(function (response) {
+                    if (response.ok) {
+                      return response.json();
+                    } else {
+                      throw new Error("Error al crear cuenta.");
+                    }
+                  })
+                  .then(function (data) {
+                    alert("Cuenta creada correctamente.");
+                    window.location = "loguin.html";
+                  })
+                  .catch(function (error) {
+                    alert("Error al crear la cuenta.");
+                  });
+              }
+            } catch (error) {
+              console.error("Error al validar DNI:", error);
+            }
           }
         });
+    
+      async function ValidarDni(dni) {
+        try {
+          const response = await fetch(URL + "validarDni/" + dni, {
+            method: "GET",
+          });
+          const data = await response.json();
+          if (data.validado === false) {
+            return true;
+          } else {
+            alert("Ya existe una cuenta con este número de documento.");
+            document.getElementById("dni").style.borderColor = "red";
+            return false;
+          }
+        } catch (error) {
+          console.error("Error en la solicitud:", error);
+          return false;
+        }
+      }
+    
       function ValidarFormulario() {
         if (
           document.getElementById("nombre").value.trim() == "" ||
