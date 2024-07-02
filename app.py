@@ -232,8 +232,8 @@ class Conexion:
 # ------------------------------------------------  
 #       PROGRAMA PRINCIPAL
 # ------------------------------------------------ 
-# conexion = Conexion(host='JensonMedina.mysql.pythonanywhere-services.com', user='JensonMedina', password='root1234', database='JensonMedina$argentum')
-conexion = Conexion(host='localhost', user='root', password='1234', database='argentum')
+conexion = Conexion(host='Jenson.mysql.pythonanywhere-services.com', user='Jenson', password='root1234', database='Jenson$argentum')
+# conexion = Conexion(host='localhost', user='root', password='1234', database='argentum')
 
 @app.route("/cuentas", methods=["POST"])
 def loguin():

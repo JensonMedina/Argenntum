@@ -1,7 +1,8 @@
 'use strict';
 
-//const url = "http://maripilicruz.pythonanywhere.com/";
-const url = "http://127.0.0.1:5000/"
+// const url = "http://127.0.0.1:5000/";
+const URL = "https://jenson.pythonanywhere.com/"
+
 
 document.addEventListener('DOMContentLoaded', function() {
     let nombreUsuario = document.querySelector('#nombreUsuario');
@@ -73,7 +74,7 @@ async function getMovimientos(pCliente, pNroCta){
         let tipoNro = document.querySelector('#tittipoNumero');
         let grilla = document.querySelector('#table-movimientos');
 
-        const response = await fetch(url + `movimientos/${pCliente}/${pNroCta}`,
+        const response = await fetch(URL + `movimientos/${pCliente}/${pNroCta}`,
         {
             mode: 'cors',
         }); 
